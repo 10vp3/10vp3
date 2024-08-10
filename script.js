@@ -1,30 +1,90 @@
-let score = 0;
-const target = document.getElementById('target');
-const scoreDisplay = document.getElementById('score');
 const gameArea = document.getElementById('gameArea');
+const scoreDisplay = document.getElementById('score');
+const gridSize = 20;
+let snake = [{ x: 200, y: 200 }];
+let direction = { x: 0, y: 0 };
+let food = { x: 0, y: 0 };
+let score = 0;
 
-// Fonction pour déplacer la cible à une position aléatoire
-function moveTarget() {
-    const gameAreaRect = gameArea.getBoundingClientRect();
-    const maxX = gameAreaRect.width - target.offsetWidth;
-    const maxY = gameAreaRect.height - target.offsetHeight;
-
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
-
-    target.style.left = `${randomX}px`;
-    target.style.top = `${randomY}px`;
+// Générer une nouvelle position aléatoire pour la nourriture
+function createFood() {
+    food.x = Math.floor(Math.random() * (gameArea.clientWidth / gridSize)) * gridSize;
+    food.y = Math.floor(Math.random() * (gameArea.clientHeight / gridSize)) * gridSize;
 }
 
-// Fonction appelée lorsque le joueur clique sur la cible
-function clickTarget() {
-    score++;
-    scoreDisplay.textContent = `Score: ${score}`;
-    moveTarget();
+// Afficher la nourriture dans la zone de jeu
+function drawFood() {
+    const foodElement = document.createElement('div');
+    foodElement.style.left = `${food.x}px`;
+    foodElement.style.top = `${food.y}px`;
+    foodElement.classList.add('food');
+    gameArea.appendChild(foodElement);
 }
 
-// Ajouter un écouteur d'événement au clic sur la cible
-target.addEventListener('click', clickTarget);
+// Mettre à jour la position du serpent
+function moveSnake() {
+    const newHead = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+    snake.unshift(newHead);
 
-// Déplacer la cible initialement pour commencer le jeu
-moveTarget();
+    // Vérifier si le serpent mange la nourriture
+    if (newHead.x === food.x && newHead.y === food.y) {
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+        createFood();
+        gameArea.innerHTML = ''; // Effacer l'ancienne nourriture
+        drawFood();
+    } else {
+        snake.pop(); // Supprimer la queue si le serpent ne mange pas
+    }
+}
+
+// Dessiner le serpent dans la zone de jeu
+function drawSnake() {
+    gameArea.innerHTML = '';
+    snake.forEach(segment => {
+        const snakeElement = document.createElement('div');
+        snakeElement.style.left = `${segment.x}px`;
+        snakeElement.style.top = `${segment.y}px`;
+        snakeElement.classList.add('snake');
+        gameArea.appendChild(snakeElement);
+    });
+}
+
+// Contrôler le serpent avec les touches du clavier
+function changeDirection(event) {
+    const key = event.keyCode;
+    if (key === 37 && direction.x === 0) {
+        direction = { x: -gridSize, y: 0 }; // Gauche
+    } else if (key === 38 && direction.y === 0) {
+        direction = { x: 0, y: -gridSize }; // Haut
+    } else if (key === 39 && direction.x === 0) {
+        direction = { x: gridSize, y: 0 }; // Droite
+    } else if (key === 40 && direction.y === 0) {
+        direction = { x: 0, y: gridSize }; // Bas
+    }
+}
+
+// Vérifier si le serpent entre en collision avec les murs ou lui-même
+function checkCollision() {
+    const head = snake[0];
+    if (
+        head.x < 0 || head.x >= gameArea.clientWidth ||
+        head.y < 0 || head.y >= gameArea.clientHeight ||
+        snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
+    ) {
+        clearInterval(gameLoop);
+        alert('Game Over! Votre score est: ' + score);
+    }
+}
+
+// Boucle de jeu
+function game() {
+    moveSnake();
+    drawSnake();
+    checkCollision();
+}
+
+document.addEventListener('keydown', changeDirection);
+createFood();
+drawFood();
+const gameLoop = setInterval(game, 100);
