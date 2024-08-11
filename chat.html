@@ -43,7 +43,7 @@
     <div id="messages"></div>
     <div id="inputContainer">
         <input type="text" id="messageInput" placeholder="Type your message">
-        <button id="sendBtn">Send</button>
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
     </div>
 
     <script src="chat.js"></script>
@@ -58,6 +58,21 @@
             if (username === "admin") {
                 button.style.display = "block";
                 hiddenInputContainer.style.display = "block";
+            }
+        }
+
+        // Fonction pour envoyer un message
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+
+            if (message) {
+                const messagesContainer = document.getElementById('messages');
+                const username = localStorage.getItem("username");
+                messagesContainer.innerHTML += `<p><strong>${username}:</strong> ${message}</p>`;
+                messageInput.value = ''; // Réinitialiser le champ de message après l'envoi
+            } else {
+                alert('Veuillez entrer un message.');
             }
         }
 
