@@ -8,6 +8,7 @@
         body {
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -23,11 +24,9 @@
         }
 
         .controls {
-            position: absolute;
-            bottom: 10px;
             display: flex;
             justify-content: center;
-            width: 100%;
+            margin-top: 10px;
         }
 
         .controls button {
@@ -39,9 +38,11 @@
             color: white;
             font-size: 24px;
             border-radius: 50%;
+            cursor: pointer;
         }
+
         #retour {
-            position: absolute;
+            position: fixed;
             top: 10px;
             left: 10px;
             background-color: #007BFF;
@@ -58,9 +59,7 @@
     </style>
 </head>
 <body>
-    <div class="controls">
-        <button id="retour" onclick="retour()">←Menu</button>
-    </div>
+    <button id="retour" onclick="retour()">← Menu</button>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <button id="up">↑</button>
