@@ -1,6 +1,3 @@
 {
-  "allowedIPs": [
-    { "ip": "192.168.1.1", "username": "Alice" },
-    { "ip": "192.168.1.2", "username": "Bob" }
-  ]
+  "allowedIPs": []
 }
