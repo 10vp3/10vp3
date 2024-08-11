@@ -1,5 +1,41 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chat {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #messages {
+            border: 1px solid #ddd;
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        #messageInput {
+            width: calc(100% - 90px);
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #sendBtn {
+            padding: 10px;
+        }
+    </style>
+</head>
 <body>
-  <p>Chat</p>
+    <div id="chat">
+        <div id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type a message">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script src="chat.js"></script>
 </body>
 </html>
