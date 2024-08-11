@@ -1,7 +1,8 @@
+// Fonction pour obtenir l'adresse IP (exemple avec une IP fictive)
 function getUserIP() {
     // Remplacer cette ligne par une méthode réelle d'obtention de l'IP si disponible.
     // Pour l'exemple, nous générons une IP fictive.
-    return '192.168.0.1';
+    return '192.168.0.1'; // Remplacez par la méthode réelle pour obtenir l'IP de l'utilisateur
 }
 
 // Fonction pour vérifier si l'IP est dans le stockage local
