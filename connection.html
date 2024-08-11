@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Connection</title>
     <style>
         #form {
-            display: none; /* Cacher le formulaire par défaut */
+            display: none;
             margin-top: 20px;
         }
         #message {
             margin-bottom: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div id="message"></div>
     <div id="form">
-        <input type="text" id="username" placeholder="Enter your username">
+        <div id="message"></div>
+        <input type="text" id="username" placeholder="Entrez un nom d'utilisateur">
         <button onclick="submitUsername()">Submit</button>
     </div>
-
     <script src="db.js"></script>
 </body>
 </html>
