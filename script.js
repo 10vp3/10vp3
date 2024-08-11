@@ -63,6 +63,19 @@ function changeDirection(event) {
     }
 }
 
+// Contrôler le serpent avec les boutons tactiles
+function handleTouchControl(directionKey) {
+    if (directionKey === 'left' && direction.x === 0) {
+        direction = { x: -gridSize, y: 0 }; // Gauche
+    } else if (directionKey === 'up' && direction.y === 0) {
+        direction = { x: 0, y: -gridSize }; // Haut
+    } else if (directionKey === 'right' && direction.x === 0) {
+        direction = { x: gridSize, y: 0 }; // Droite
+    } else if (directionKey === 'down' && direction.y === 0) {
+        direction = { x: 0, y: gridSize }; // Bas
+    }
+}
+
 // Vérifier si le serpent entre en collision avec les murs ou lui-même
 function checkCollision() {
     const head = snake[0];
@@ -82,6 +95,12 @@ function game() {
     drawSnake();
     checkCollision();
 }
+
+// Ajouter des événements pour les contrôles tactiles
+document.getElementById('up').addEventListener('click', () => handleTouchControl('up'));
+document.getElementById('left').addEventListener('click', () => handleTouchControl('left'));
+document.getElementById('down').addEventListener('click', () => handleTouchControl('down'));
+document.getElementById('right').addEventListener('click', () => handleTouchControl('right'));
 
 document.addEventListener('keydown', changeDirection);
 createFood();
