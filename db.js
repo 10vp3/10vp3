@@ -1,3 +1,5 @@
+// db.js
+
 // Fonction pour obtenir l'adresse IP
 function getUserIP() {
     return new Promise((resolve, reject) => {
