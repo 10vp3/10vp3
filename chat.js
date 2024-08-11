@@ -26,7 +26,7 @@ function addMessage(username, text) {
 
 // Envoyer un message
 function sendMessage() {
-    const username = prompt('Enter your username:');
+    const username = getUsername(); // Récupérer le nom d'utilisateur depuis localStorage
     const messageInput = document.getElementById('messageInput');
     const text = messageInput.value.trim();
 
@@ -45,6 +45,26 @@ document.getElementById('messageInput').addEventListener('keypress', function(ev
         sendMessage();
     }
 });
+
+// Fonction pour récupérer l'username depuis localStorage
+function getUsername() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        return username;
+    } else {
+        // Si aucun username n'est trouvé, vous pouvez demander à l'utilisateur de le saisir
+        storeUsername(); // Demander à l'utilisateur de saisir son username
+        return localStorage.getItem('username'); // Récupérer le username après l'avoir stocké
+    }
+}
+
+// Fonction pour stocker l'username
+function storeUsername() {
+    const username = prompt('Enter your username:');
+    if (username) {
+        localStorage.setItem('username', username);
+    }
+}
 
 // Load messages on page load
 loadMessages();
