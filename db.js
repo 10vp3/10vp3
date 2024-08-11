@@ -11,6 +11,16 @@ function getUserIP() {
     }
 }
 
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
 // Fonction pour vérifier si l'IP est dans le stockage local
 function checkIP(ip) {
     const storedData = JSON.parse(localStorage.getItem('ipData')) || [];
@@ -45,7 +55,7 @@ function submitUsername() {
     if (username) {
         addIP(ip, username);
         // Rediriger l'utilisateur vers la page chat.html après l'ajout
-        localStorage.setItem("username", username);
+        setCookie("username", username, 1);
         window.location.href = 'chat.html';
     } else {
         alert('Veuillez entrer un nom d\'utilisateur.');
