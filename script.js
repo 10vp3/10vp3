@@ -6,13 +6,13 @@ let direction = { x: 0, y: 0 };
 let food = { x: 0, y: 0 };
 let score = 0;
 
-// Générer une nouvelle position aléatoire pour la nourriture
+// Générer une nouvelle position aléatoire pour la pomme
 function createFood() {
     food.x = Math.floor(Math.random() * (gameArea.clientWidth / gridSize)) * gridSize;
     food.y = Math.floor(Math.random() * (gameArea.clientHeight / gridSize)) * gridSize;
 }
 
-// Afficher la nourriture dans la zone de jeu
+// Afficher la pomme dans la zone de jeu
 function drawFood() {
     const foodElement = document.createElement('div');
     foodElement.style.left = `${food.x}px`;
@@ -26,13 +26,11 @@ function moveSnake() {
     const newHead = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
     snake.unshift(newHead);
 
-    // Vérifier si le serpent mange la nourriture
+    // Vérifier si le serpent mange la pomme
     if (newHead.x === food.x && newHead.y === food.y) {
         score++;
         scoreDisplay.textContent = `Score: ${score}`;
         createFood();
-        gameArea.innerHTML = ''; // Effacer l'ancienne nourriture
-        drawFood();
     } else {
         snake.pop(); // Supprimer la queue si le serpent ne mange pas
     }
@@ -48,6 +46,7 @@ function drawSnake() {
         snakeElement.classList.add('snake');
         gameArea.appendChild(snakeElement);
     });
+    drawFood();
 }
 
 // Contrôler le serpent avec les touches du clavier
