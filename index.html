@@ -3,9 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Menu de Jeux</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            width: 100px;
+            height: 50px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    
+    <h1><b>Menu</b></h1>
+    <div id="menu">
+        <button id="snake" onclick="go_page('snake.html')">Snake</button>
+        <button id="pacman" onclick="go_page('pacman.html')">Pacman</button>
+        <button id="chat" onclick="go_page('chat.html')">Chat</button>
+    </div>
+
+    <script>
+        function go_page(page) {
+            window.location.href = page;
+        }
+    </script>
 </body>
 </html>
