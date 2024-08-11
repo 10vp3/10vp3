@@ -13,7 +13,7 @@ async function getUserIP() {
 // Fonction pour charger les données JSON contenant les IP autorisées
 async function loadAllowedIPs() {
     try {
-        const response = await fetch('ips.json');
+        const response = await fetch('db.json');
         const data = await response.json();
         return data.allowedIPs;
     } catch (error) {
