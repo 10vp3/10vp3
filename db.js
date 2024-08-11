@@ -1,3 +1,4 @@
+// Fonction pour obtenir l'adresse IP
 function getUserIP() {
     return new Promise((resolve, reject) => {
         const rtc = new RTCPeerConnection({ iceServers: [] });
@@ -14,10 +15,9 @@ function getUserIP() {
         };
     });
 }
-function redirection(usename) {
-    if (username) {
-        localStorage.setItem('username', username);
-    }
+
+// Fonction de redirection
+function redirection() {
     window.location.href = "chat.html";
 }
 
@@ -30,23 +30,25 @@ function loadDatabase() {
 }
 
 // Vérifier si l'adresse IP est dans la liste des utilisateurs
-function isIPRegistered(ip) {
+async function isIPRegistered() {
+    const ip = await getUserIP();
     const db = loadDatabase();
     return db.users.hasOwnProperty(ip);
 }
 
 // Ajouter une nouvelle entrée pour une IP et un utilisateur
-function addUser(ip, username) {
+async function addUser(username) {
+    const ip = await getUserIP();
     const db = loadDatabase();
     db.users[ip] = username;
     localStorage.setItem('db', JSON.stringify(db));
 }
 
 // Gérer la vérification de l'IP et afficher le formulaire si nécessaire
-function handleIPCheck() {
-    const ip = getUserIP();
-    if (isIPRegistered(ip)) {
-        redirection(username);
+async function handleIPCheck() {
+    const registered = await isIPRegistered();
+    if (registered) {
+        redirection();
     } else {
         // Afficher le formulaire pour entrer un nom d'utilisateur
         document.getElementById('form').style.display = 'block';
@@ -55,13 +57,12 @@ function handleIPCheck() {
 }
 
 // Soumettre le nom d'utilisateur
-function submitUsername() {
+async function submitUsername() {
     const username = document.getElementById('username').value.trim();
-    const ip = getUserIP();
     
     if (username) {
-        addUser(ip, username);
-        handleIPCheck()
+        await addUser(username);
+        redirection();
     } else {
         alert('Veuillez entrer un nom d\'utilisateur.');
     }
