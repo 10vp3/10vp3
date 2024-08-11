@@ -1,82 +1,49 @@
-// Fonction pour obtenir l'adresse IP
-async function getUserIP() {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        console.log(data.ip); // Pour vérifier l'IP dans la console du navigateur
-        return data.ip;
-    } catch (error) {
-        console.error('Erreur lors de la récupération de l\'IP:', error);
-        return null;
+function getUserIP() {
+    // Remplacer cette ligne par une méthode réelle d'obtention de l'IP si disponible.
+    // Pour l'exemple, nous générons une IP fictive.
+    return '192.168.0.1';
+}
+
+// Fonction pour vérifier si l'IP est dans le stockage local
+function checkIP(ip) {
+    const storedData = JSON.parse(localStorage.getItem('ipData')) || [];
+    return storedData.some(entry => entry.ip === ip);
+}
+
+// Fonction pour ajouter une nouvelle IP au stockage local
+function addIP(ip, username) {
+    const storedData = JSON.parse(localStorage.getItem('ipData')) || [];
+    storedData.push({ ip, username });
+    localStorage.setItem('ipData', JSON.stringify(storedData));
+}
+
+// Fonction pour gérer la vérification et l'affichage du formulaire
+function handleIPCheck() {
+    const ip = getUserIP();
+    if (checkIP(ip)) {
+        // L'utilisateur a accès à la page chat.html
+        window.location.href = 'chat.html';
+    } else {
+        // Afficher le formulaire pour entrer un nom d'utilisateur
+        document.getElementById('form').style.display = 'block';
+        document.getElementById('message').textContent = 'Votre adresse IP n\'est pas reconnue. Veuillez entrer un nom d\'utilisateur.';
     }
 }
 
-// Fonction de redirection
-function redirection() {
-    window.location.href = "chat.html";
-}
-
-// Charger les données du fichier JSON depuis le stockage local
-function loadDatabase() {
-    const defaultDB = { users: {} };
-    const db = JSON.parse(localStorage.getItem('db')) || defaultDB;
-    localStorage.setItem('db', JSON.stringify(db)); // Assurez-vous que la base de données est toujours présente
-    return db;
-}
-
-// Vérifier si l'adresse IP est dans la liste des utilisateurs
-async function isIPRegistered() {
-    try {
-        const ip = await getUserIP();
-        const db = loadDatabase();
-        return db.users.hasOwnProperty(ip);
-    } catch (error) {
-        console.error("Error retrieving IP:", error);
-        return false;
-    }
-}
-
-// Ajouter une nouvelle entrée pour une IP et un utilisateur
-async function addUser(username) {
-    try {
-        const ip = await getUserIP();
-        const db = loadDatabase();
-        db.users[ip] = username;
-        localStorage.setItem('db', JSON.stringify(db));
-    } catch (error) {
-        console.error("Error adding user:", error);
-    }
-}
-
-// Gérer la vérification de l'IP et afficher le formulaire si nécessaire
-async function handleIPCheck() {
-    try {
-        const registered = await isIPRegistered();
-        if (registered) {
-            redirection();
-        } else {
-            document.getElementById('form').style.display = 'block';
-            document.getElementById('message').textContent = 'Votre adresse IP n\'est pas reconnue. Veuillez entrer un nom d\'utilisateur.';
-        }
-    } catch (error) {
-        console.error("Error in IP check:", error);
-    }
-}
-
-// Soumettre le nom d'utilisateur
-async function submitUsername() {
-    try {
-        const username = document.getElementById('username').value.trim();
-        if (username) {
-            await addUser(username);
-            redirection();
-        } else {
-            alert('Veuillez entrer un nom d\'utilisateur.');
-        }
-    } catch (error) {
-        console.error("Error submitting username:", error);
+// Fonction pour soumettre le nom d'utilisateur
+function submitUsername() {
+    const username = document.getElementById('username').value.trim();
+    const ip = getUserIP();
+    
+    if (username) {
+        addIP(ip, username);
+        // Rediriger l'utilisateur vers la page chat.html après l'ajout
+        localStorage.setItem("username", username);
+        window.location.href = 'chat.html';
+    } else {
+        alert('Veuillez entrer un nom d\'utilisateur.');
     }
 }
 
 // Appeler la fonction de vérification au chargement de la page
-handleIPCheck();
+window.onload = handleIPCheck;
