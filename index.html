@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Clic</title>
+    <title>Jeu de Snake</title>
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
@@ -18,31 +19,76 @@
             position: relative;
             width: 400px;
             height: 400px;
-            background-color: #fff;
-            border: 2px solid #ccc;
+            background-color: #333;
+            border: 10px solid #555;
+            margin-bottom: 20px;
         }
 
-        #target {
+        .snake {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            background-color: #00FF00;
+        }
+
+        .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FF0000;
         }
 
         #score {
-            margin-top: 20px;
             font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #555;
+            color: white;
+            font-size: 18px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        #startBtn {
+            width: 100px;
+            height: 50px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div>
-        <div id="gameArea">
-            <div id="target"></div>
-        </div>
-        <div id="score">Score: 0</div>
+    <div id="gameArea"></div>
+    <div id="score">Score: 0</div>
+    <div class="controls">
+        <button class="control-btn" id="up">↑</button>
     </div>
+    <div class="controls">
+        <button class="control-btn" id="left">←</button>
+        <button class="control-btn" id="down">↓</button>
+        <button class="control-btn" id="right">→</button>
+    </div>
+    <button id="startBtn">Commencer</button>
     <script src="script.js"></script>
 </body>
 </html>
