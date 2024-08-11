@@ -1,18 +1,15 @@
-// db.js
-
 // Fonction pour obtenir l'adresse IP
 async function getUserIP() {
     try {
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
-        console.log(data.ip)
+        console.log(data.ip); // Pour vérifier l'IP dans la console du navigateur
         return data.ip;
     } catch (error) {
         console.error('Erreur lors de la récupération de l\'IP:', error);
         return null;
     }
 }
-
 
 // Fonction de redirection
 function redirection() {
