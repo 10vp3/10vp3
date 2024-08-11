@@ -18,14 +18,67 @@
             flex: 1;
             margin-right: 10px;
         }
+        #deleteChatButton {
+            display: none; /* Cacher le bouton par défaut */
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #hiddenInputContainer {
+            display: none; /* Cacher le conteneur par défaut */
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+    <button id="deleteChatButton" onclick="deleteLocalStorage()">Supprimer clé</button>
+    
+    <div id="hiddenInputContainer">
+        <input type="text" id="hiddenInput" placeholder="Entrer la clé à supprimer du localStorage...">
+        <button onclick="deleteLocalStorage()">Submit</button>
+    </div>
+
     <div id="messages"></div>
     <div id="inputContainer">
         <input type="text" id="messageInput" placeholder="Type your message">
         <button id="sendBtn">Send</button>
     </div>
-    <script src="chat.js"></script>
+
+    <script>
+        // Fonction pour afficher le bouton si l'utilisateur est admin
+        function displayButton() {
+            const button = document.getElementById('deleteChatButton');
+            const username = localStorage.getItem("username");
+            const hiddenInputContainer = document.getElementById('hiddenInputContainer');
+            
+            if (username === "admin") {
+                button.style.display = "block";
+                hiddenInputContainer.style.display = "block";
+            }
+        }
+
+        // Fonction pour supprimer une clé du localStorage
+        function deleteLocalStorage() {
+            const hiddenInputValue = document.getElementById('hiddenInput').value.trim();
+            const button = document.getElementById('deleteChatButton');
+            
+            if (hiddenInputValue) {
+                localStorage.removeItem(hiddenInputValue);
+                alert(`Clé ${hiddenInputValue} supprimée du localStorage.`);
+                // Réinitialiser le formulaire et masquer le bouton et le champ caché
+                document.getElementById('hiddenInput').value = '';
+                button.style.display = "none";
+                document.getElementById('hiddenInputContainer').style.display = "none";
+            } else {
+                alert('Veuillez entrer une clé.');
+            }
+        }
+
+        // Appeler la fonction pour vérifier la condition et afficher le bouton au chargement de la page
+        window.onload = displayButton;
+    </script>
 </body>
 </html>
