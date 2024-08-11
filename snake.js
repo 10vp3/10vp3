@@ -1,7 +1,7 @@
 const gameArea = document.getElementById('gameArea');
 const scoreDisplay = document.getElementById('score');
 const startBtn = document.getElementById('startBtn');
-const gridSize = 10; //Vitesse du snake
+const gridSize = 20; // Taille de chaque cellule du serpent et de la nourriture
 let snake, direction, food, score, gameLoop;
 
 // Initialiser le jeu
@@ -15,13 +15,13 @@ function initGame() {
     drawSnake();
 }
 
-// Générer une nouvelle position aléatoire pour la pomme
+// Générer une nouvelle position aléatoire pour la nourriture
 function createFood() {
     food.x = Math.floor(Math.random() * (gameArea.clientWidth / gridSize)) * gridSize;
     food.y = Math.floor(Math.random() * (gameArea.clientHeight / gridSize)) * gridSize;
 }
 
-// Afficher la pomme dans la zone de jeu
+// Afficher la nourriture dans la zone de jeu
 function drawFood() {
     const foodElement = document.createElement('div');
     foodElement.style.left = `${food.x}px`;
@@ -35,11 +35,10 @@ function moveSnake() {
     const newHead = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
     snake.unshift(newHead);
 
-    // Vérifier si le serpent mange la pomme
+    // Vérifier si le serpent mange la nourriture
     if (newHead.x === food.x && newHead.y === food.y) {
         score++;
         scoreDisplay.textContent = `Score: ${score}`;
-        gridSize++;
         createFood();
     } else {
         snake.pop(); // Supprimer la queue si le serpent ne mange pas
