@@ -1,6 +1,9 @@
-<html>
-  <head>
-    <title>Jeu de Snake</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Jeux</title>
     <style>
         body {
             display: flex;
@@ -12,78 +15,43 @@
             background-color: #f0f0f0;
         }
 
-        #gameArea {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            background-color: #333;
-            border: 10px solid #555;
+        h1 {
             margin-bottom: 20px;
-        }
-
-        .snake {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #00FF00;
-        }
-
-        .food {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #FF0000;
-        }
-
-        #score {
-            font-size: 24px;
             color: #333;
-            margin-bottom: 20px;
         }
 
-        .controls {
+        #menu {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 20px;
         }
 
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            background-color: #555;
-            color: white;
-            font-size: 18px;
-            border: none;
-            margin: 5px;
-            cursor: pointer;
-            user-select: none;
-            text-align: center;
-            line-height: 50px;
-        }
-
-        #startBtn {
-            width: 100px;
+        button {
+            width: 150px;
             height: 50px;
             background-color: #007BFF;
             color: white;
             font-size: 18px;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
-            display: none;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-  <h1><b>Menu</b></h1>
-  <div id="menu">
-    <button id="snake" onclick="go_page('snake.html')">Snake</button>
-    <button id="pacman" onclick="go_page('packman.html')">Pacman</button>
-  </div>
-  <script>
-    function go_page(page) {
-      window.location.href = page;
-    }
-  </script>
+    <h1><b>Menu de Jeux</b></h1>
+    <div id="menu">
+        <button id="snake" onclick="go_page('snake.html')">Snake</button>
+        <button id="pacman" onclick="go_page('pacman.html')">Pacman</button>
+    </div>
+
+    <script>
+        function go_page(page) {
+            window.location.href = page;
+        }
+    </script>
 </body>
 </html>
