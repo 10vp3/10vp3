@@ -14,6 +14,12 @@ function getUserIP() {
         };
     });
 }
+function redirection(usename) {
+    if (username) {
+        localStorage.setItem('username', username);
+    }
+    window.location.href = "chat.html";
+}
 
 // Charger les données du fichier JSON depuis le stockage local
 function loadDatabase() {
@@ -40,8 +46,7 @@ function addUser(ip, username) {
 function handleIPCheck() {
     const ip = getUserIP();
     if (isIPRegistered(ip)) {
-        // L'utilisateur a accès à la page chat.html
-        window.location.href = 'chat.html';
+        redirection(username);
     } else {
         // Afficher le formulaire pour entrer un nom d'utilisateur
         document.getElementById('form').style.display = 'block';
@@ -56,8 +61,7 @@ function submitUsername() {
     
     if (username) {
         addUser(ip, username);
-        // Rediriger l'utilisateur vers la page chat.html après l'ajout
-        window.location.href = 'chat.html';
+        handleIPCheck()
     } else {
         alert('Veuillez entrer un nom d\'utilisateur.');
     }
