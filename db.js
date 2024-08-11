@@ -5,6 +5,7 @@ async function getUserIP() {
     try {
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
+        console.log(data.ip)
         return data.ip;
     } catch (error) {
         console.error('Erreur lors de la récupération de l\'IP:', error);
