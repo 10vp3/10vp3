@@ -1,40 +1,35 @@
 // Fonction pour obtenir une adresse IP simulée de l'utilisateur
 function getUserIP() {
-    // Remplacer cette ligne par une méthode réelle d'obtention de l'IP si disponible.
+    // Remplacer ceci par une méthode réelle d'obtention de l'IP si disponible.
     // Pour l'exemple, nous générons une IP fictive.
     return '192.168.0.3'; // Remplacez ceci par la méthode d'obtention de l'IP si vous avez un serveur
 }
 
 // Charger les données du fichier JSON depuis le stockage local
 function loadDatabase() {
-    // Simulation d'une base de données en localStorage
-    const defaultDB = {
-        allowedIPs: ["192.168.0.1", "192.168.0.2"],
-        users: []
-    };
-    
+    const defaultDB = { users: {} };
     const db = JSON.parse(localStorage.getItem('db')) || defaultDB;
-    localStorage.setItem('db', JSON.stringify(db));
+    localStorage.setItem('db', JSON.stringify(db)); // Assurez-vous que la base de données est toujours présente
     return db;
 }
 
-// Vérifier si l'adresse IP est dans la liste des IP autorisées
-function isIPAllowed(ip) {
+// Vérifier si l'adresse IP est dans la liste des utilisateurs
+function isIPRegistered(ip) {
     const db = loadDatabase();
-    return db.allowedIPs.includes(ip);
+    return db.users.hasOwnProperty(ip);
 }
 
 // Ajouter une nouvelle entrée pour une IP et un utilisateur
 function addUser(ip, username) {
     const db = loadDatabase();
-    db.users.push({ ip, username });
+    db.users[ip] = username;
     localStorage.setItem('db', JSON.stringify(db));
 }
 
 // Gérer la vérification de l'IP et afficher le formulaire si nécessaire
 function handleIPCheck() {
     const ip = getUserIP();
-    if (isIPAllowed(ip)) {
+    if (isIPRegistered(ip)) {
         // L'utilisateur a accès à la page chat.html
         window.location.href = 'chat.html';
     } else {
