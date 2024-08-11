@@ -39,7 +39,8 @@ function submitUsername() {
     if (username) {
         addIP(ip, username);
         // Rediriger l'utilisateur vers la page chat.html après l'ajout
-        window.location.href = 'chat.html';
+        //window.location.href = 'chat.html';
+        handleIPCheck();
     } else {
         alert('Veuillez entrer un nom d\'utilisateur.');
     }
