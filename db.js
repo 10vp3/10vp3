@@ -33,40 +33,55 @@ function loadDatabase() {
 
 // Vérifier si l'adresse IP est dans la liste des utilisateurs
 async function isIPRegistered() {
-    const ip = await getUserIP();
-    const db = loadDatabase();
-    return db.users.hasOwnProperty(ip);
+    try {
+        const ip = await getUserIP();
+        const db = loadDatabase();
+        return db.users.hasOwnProperty(ip);
+    } catch (error) {
+        console.error("Error retrieving IP:", error);
+        return false;
+    }
 }
 
 // Ajouter une nouvelle entrée pour une IP et un utilisateur
 async function addUser(username) {
-    const ip = await getUserIP();
-    const db = loadDatabase();
-    db.users[ip] = username;
-    localStorage.setItem('db', JSON.stringify(db));
+    try {
+        const ip = await getUserIP();
+        const db = loadDatabase();
+        db.users[ip] = username;
+        localStorage.setItem('db', JSON.stringify(db));
+    } catch (error) {
+        console.error("Error adding user:", error);
+    }
 }
 
 // Gérer la vérification de l'IP et afficher le formulaire si nécessaire
 async function handleIPCheck() {
-    const registered = await isIPRegistered();
-    if (registered) {
-        redirection();
-    } else {
-        // Afficher le formulaire pour entrer un nom d'utilisateur
-        document.getElementById('form').style.display = 'block';
-        document.getElementById('message').textContent = 'Votre adresse IP n\'est pas reconnue. Veuillez entrer un nom d\'utilisateur.';
+    try {
+        const registered = await isIPRegistered();
+        if (registered) {
+            redirection();
+        } else {
+            document.getElementById('form').style.display = 'block';
+            document.getElementById('message').textContent = 'Votre adresse IP n\'est pas reconnue. Veuillez entrer un nom d\'utilisateur.';
+        }
+    } catch (error) {
+        console.error("Error in IP check:", error);
     }
 }
 
 // Soumettre le nom d'utilisateur
 async function submitUsername() {
-    const username = document.getElementById('username').value.trim();
-    
-    if (username) {
-        await addUser(username);
-        redirection();
-    } else {
-        alert('Veuillez entrer un nom d\'utilisateur.');
+    try {
+        const username = document.getElementById('username').value.trim();
+        if (username) {
+            await addUser(username);
+            redirection();
+        } else {
+            alert('Veuillez entrer un nom d\'utilisateur.');
+        }
+    } catch (error) {
+        console.error("Error submitting username:", error);
     }
 }
 
