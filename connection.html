@@ -3,37 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrôle d'accès</title>
+    <title>Accès à Chat</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
-        }
-        .container {
             text-align: center;
         }
-        input, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
+        #loginForm {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="accessCheck">
         <h1>Vérification d'accès</h1>
-        <p id="message">Chargement...</p>
-        <div id="loginForm" style="display: none;">
-            <p>Votre IP n'est pas autorisée. Veuillez entrer un nom d'utilisateur :</p>
-            <input type="text" id="username" placeholder="Nom d'utilisateur">
-            <button onclick="submitUsername()">Soumettre</button>
-        </div>
+        <button onclick="checkAccess()">Vérifier l'accès</button>
     </div>
-    <script src="db.js"></script>
+    <div id="loginForm">
+        <h1>Veuillez entrer votre nom d'utilisateur</h1>
+        <input type="text" id="username" placeholder="Nom d'utilisateur">
+        <button onclick="submitUsername()">Soumettre</button>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
