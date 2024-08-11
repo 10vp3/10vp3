@@ -43,6 +43,9 @@
     </style>
 </head>
 <body>
+    <div class="controls">
+        <button id="retour" onclick="retour()">←Menu</button>
+    </div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <button id="up">↑</button>
@@ -51,5 +54,10 @@
         <button id="right">→</button>
     </div>
     <script src="pacman.js"></script>
+    <script>
+        function retour() {
+            window.location.href = "index.html";
+        }
+    </script>
 </body>
 </html>
