@@ -1,7 +1,7 @@
 const gameArea = document.getElementById('gameArea');
 const scoreDisplay = document.getElementById('score');
 const startBtn = document.getElementById('startBtn');
-const gridSize = 20;
+const gridSize = 10; //Vitesse du snake
 let snake, direction, food, score, gameLoop;
 
 // Initialiser le jeu
