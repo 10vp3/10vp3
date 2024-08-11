@@ -41,9 +41,10 @@ const map = [
 
 function drawPacman() {
     ctx.beginPath();
+    const angleOffset = pacman.mouthOpen ? 0.2 * Math.PI : 0;
     ctx.arc(pacman.x + pacman.radius, pacman.y + pacman.radius, pacman.radius, 
-        pacman.mouthOpen ? 0.2 * Math.PI : 0, 
-        pacman.mouthOpen ? 1.8 * Math.PI : 2 * Math.PI
+        angleOffset, 
+        2 * Math.PI - angleOffset
     );
     ctx.lineTo(pacman.x + pacman.radius, pacman.y + pacman.radius);
     ctx.fillStyle = 'yellow';
@@ -62,14 +63,12 @@ function drawGhosts() {
 }
 
 function drawMap() {
+    pellets = [];  // Clear existing pellets
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             let tile = map[row][col];
             switch (tile) {
                 case '-':
-                    ctx.fillStyle = '#555';
-                    ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
-                    break;
                 case '|':
                     ctx.fillStyle = '#555';
                     ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
@@ -98,7 +97,7 @@ function update() {
     // Collision with walls
     let col = Math.floor(pacman.x / tileSize);
     let row = Math.floor(pacman.y / tileSize);
-    if (map[row] && map[row][col] === '-' || map[row][col] === '|') {
+    if (map[row] && (map[row][col] === '-' || map[row][col] === '|')) {
         pacman.x -= pacman.dx;
         pacman.y -= pacman.dy;
     }
@@ -190,7 +189,6 @@ function resetGame() {
         { x: 10 * tileSize, y: 5 * tileSize, dx: -tileSize, dy: 0, color: 'pink' }
     ];
     pellets = [];
-    score = 0;
     drawMap(); // Re-draw pellets
 }
 
