@@ -1,10 +1,19 @@
 const gameArea = document.getElementById('gameArea');
 const scoreDisplay = document.getElementById('score');
+const startBtn = document.getElementById('startBtn');
 const gridSize = 20;
-let snake = [{ x: 200, y: 200 }];
-let direction = { x: 0, y: 0 };
-let food = { x: 0, y: 0 };
-let score = 0;
+let snake, direction, food, score, gameLoop;
+
+// Initialiser le jeu
+function initGame() {
+    snake = [{ x: 200, y: 200 }];
+    direction = { x: 0, y: 0 };
+    food = { x: 0, y: 0 };
+    score = 0;
+    scoreDisplay.textContent = `Score: ${score}`;
+    createFood();
+    drawSnake();
+}
 
 // Générer une nouvelle position aléatoire pour la pomme
 function createFood() {
@@ -86,6 +95,8 @@ function checkCollision() {
     ) {
         clearInterval(gameLoop);
         alert('Game Over! Votre score est: ' + score);
+        startBtn.textContent = "Rejouer";
+        startBtn.style.display = "block";
     }
 }
 
@@ -96,6 +107,13 @@ function game() {
     checkCollision();
 }
 
+// Lancer la partie
+function startGame() {
+    initGame();
+    startBtn.style.display = "none";
+    gameLoop = setInterval(game, 100);
+}
+
 // Ajouter des événements pour les contrôles tactiles
 document.getElementById('up').addEventListener('click', () => handleTouchControl('up'));
 document.getElementById('left').addEventListener('click', () => handleTouchControl('left'));
@@ -103,6 +121,7 @@ document.getElementById('down').addEventListener('click', () => handleTouchContr
 document.getElementById('right').addEventListener('click', () => handleTouchControl('right'));
 
 document.addEventListener('keydown', changeDirection);
-createFood();
-drawFood();
-const gameLoop = setInterval(game, 100);
+startBtn.addEventListener('click', startGame);
+
+// Afficher le bouton "Commencer" au début
+startBtn.style.display = "block";
