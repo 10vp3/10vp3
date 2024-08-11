@@ -1,8 +1,19 @@
 // Fonction pour obtenir l'adresse IP de l'utilisateur
 function getUserIP() {
-    // Note: Ceci est une méthode simulée. Vous devez utiliser une vraie API pour obtenir l'IP.
-    // Ici, nous générons une IP fictive pour la démonstration.
-    return '192.168.0.1';
+    return new Promise((resolve, reject) => {
+        const rtc = new RTCPeerConnection({ iceServers: [] });
+        rtc.createDataChannel('');
+        rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
+        rtc.onicecandidate = (event) => {
+            if (event.candidate) {
+                const ipMatch = /(\d{1,3}\.){3}\d{1,3}/.exec(event.candidate.candidate);
+                if (ipMatch) {
+                    resolve(ipMatch[0]);
+                    rtc.onicecandidate = null;
+                }
+            }
+        };
+    });
 }
 
 // Fonction pour vérifier si l'IP est dans le stockage local
