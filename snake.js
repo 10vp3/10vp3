@@ -1,7 +1,7 @@
 const gameArea = document.getElementById('gameArea');
 const scoreDisplay = document.getElementById('score');
 const startBtn = document.getElementById('startBtn');
-const gridSize = 1000000000000; //Vitesse du snake
+const gridSize = 10; //Vitesse du snake
 let snake, direction, food, score, gameLoop;
 
 // Initialiser le jeu
@@ -39,6 +39,7 @@ function moveSnake() {
     if (newHead.x === food.x && newHead.y === food.y) {
         score++;
         scoreDisplay.textContent = `Score: ${score}`;
+        gridSize++;
         createFood();
     } else {
         snake.pop(); // Supprimer la queue si le serpent ne mange pas
