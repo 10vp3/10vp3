@@ -1,98 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Pac-man</title>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pac-Man en JavaScript</title>
     <style>
-      body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        body {
             margin: 0;
-            background-color: #f0f0f0;
-        }
-      #retour {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #007BFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
             color: white;
-            font-size: 18px;
+        }
+
+        canvas {
+            background-color: #000;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #fff;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .controls button {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            background-color: #007bff;
             border: none;
-            cursor: pointer;
-            padding: 10px;
+            color: white;
+            font-size: 24px;
+            border-radius: 50%;
         }
-
-        #retour:hover {
-            background-color: #0056b3;
-        }
-      .grid {
-    display: flex;
-    flex-wrap: wrap;
-    width: 560px;
-    height: 560px;
-    border: solid black;
-}
-  
-.grid div {
-    width: 20px;
-    height: 20px;
-}
-
-.pac-dot {
-    background-color: green;   
-    border: 5px solid white;
-    box-sizing: border-box;
-}
-
-.wall {
-    background-color: blue;
-}
-
-.power-pellet {
-    background-color: green;
-    border-radius: 10px;
-}
-
-.blinky {
-    background-color: red;
-}
-
-.pinky {
-    background-color: pink;
-}
-
-.inky {
-    background-color: cyan;
-}
-
-.clyde {
-    background-color: orange;     
-}
-
-.pac-man {
-    background-color: yellow;
-    border-radius: 10px;
-}
-
-.scared-ghost {
-    background-color: aquamarine;
-}
     </style>
-    <script src="pacman.js"></script>
-  </head>
-  <body>
-    <div id="retour">
-      <button id="retour" onclick="retour()">Menu</button>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="controls">
+        <button id="up">↑</button>
+        <button id="left">←</button>
+        <button id="down">↓</button>
+        <button id="right">→</button>
     </div>
-    <div class="grid"></div>
-    <h3>Score:<span id="score"></span></h3>
-    <script>
-      function retour() {
-        window.location.href = "index.html";
-      }
-    </script>
-  </body>
+    <script src="pacman.js"></script>
+</body>
 </html>
