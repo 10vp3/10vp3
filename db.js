@@ -16,6 +16,7 @@ function getUserIP() {
     });
 }
 
+
 // Fonction pour vérifier si l'IP est dans le stockage local
 function checkIP(ip) {
     const storedData = JSON.parse(localStorage.getItem('ipData')) || [];
