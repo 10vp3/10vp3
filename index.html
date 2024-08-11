@@ -1,110 +1,57 @@
-<!DOCTYPE html >
-< html  lang =" fr " >
-< tête >
-    < méta  jeu de caractères = " UTF-8 " >
-    < méta  nom = " viewport " contenu = " largeur = largeur-de-l'appareil, échelle-initiale = 1,0 " >
-    < titre > Menu de Jeux </ titre >
-    < style >
-        corps {
-            affichage : flex ;
-            flex-direction: colonne;
-            align-items:centre;
-            justifier-contenu : centre ;
-            hauteur: 100vh;
-            marge: 0;
-            couleur d'arrière-plan : f0f0f0 ;
-        }
-
-        h1 {
-            marge inférieure : 20 px ;
-            couleur: #333;
-        }
-
-        #menu {
-            affichage : flex ;
-            écart : 20 px ;
-        }
-
-        bouton {
-            largeur : 150px ;
-            hauteur: 50px;
-            couleur d'arrière-plan : #007BFF ;
-            couleur : blanc ;
-            taille de police : 18 px ;
-            bordure : aucune ;
-            curseur : pointeur ;
-            alignement du texte : centre ;
-        }
-
-        bouton:survoler {
-            couleur d'arrière-plan : #0056b3 ;
-        }
-< html >
-  < tête >
-    < méta  charset =" utf-8 " />
-    < titre > Pacman HTML5 </ titre >
-
-    < style  type =" texte/css " >
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>HTML5 Pacman</title>
+    
+    <style type="text/css">
       @font-face {
-	    famille de polices : « BDCartoonShoutRegular » ;
+	    font-family: 'BDCartoonShoutRegular';
         src: url('BD_Cartoon_Shout-webfont.ttf') format('truetype');
-	    poids-police : normal ;
-	    style de police : normal ;
+	    font-weight: normal;
+	    font-style: normal;
       }
       #pacman {
-        hauteur:450px;
-        largeur:342px;
-        marge:20px auto;
+        height:450px;
+        width:342px;
+        margin:20px auto;
       }
-      #cale {
-        famille de polices : BDCartoonShoutRegular ;
-        position:absolue;
-        visibilité:caché
+      #shim { 
+        font-family: BDCartoonShoutRegular; 
+        position:absolute;
+        visibility:hidden
       }
-      h1 { famille de polices : BDCartoonShoutRegular ; alignement du texte : centre ; }
-      corps { largeur:342px; marge:0px auto; famille de polices:sans-serif; }
-      une { décoration-de-texte:none; }
-    </ style >
+      h1 { font-family: BDCartoonShoutRegular; text-align:center; }
+      body { width:342px; margin:0px auto; font-family:sans-serif; }
+      a { text-decoration:none; }
+    </style>
 
-</ tête >
+</head>
 
-< corps >
-    < h1 > < b > Menu de Jeux </ b > </ h1 >
-    < div  id =" menu " >
-        < bouton  id =" serpent " onclick =" go_page('snake.html') " > Serpent </ bouton >
-        < bouton  id =" pacman " onclick =" go_page('pacman.html') " > Pacman </ bouton >
-        < bouton  id =" connexion " onclick =" go_page('connection.html') " > Chat </ bouton >
-    </div>​​
+<body>
+  
+  <div id="shim">shim for font face</div>
 
-    < script >
-        fonction  go_page ( page )  {
-            fenêtre . emplacement . href  =  page ;
-        }
-    </script>​​
+  <h1>HTML5 Pacman</h1>
 
-  < div  id =" shim " > cale pour la police de caractères </ div >
+  <a href="http://arandomurl.com/">Writeup</a> |
+  Code on <a href="http://arandomurl.com/">Github</a>
 
-  < h1 > Pacman HTML5 </ h1 >
+  <div id="pacman"></div>
+  <script src="pacman.js"></script>
+  <script src="modernizr-1.5.min.js"></script>
 
-  < a  href =" http://arandomurl.com/ " > Rédaction </ a > |
-  Code sur < a  href =" http://arandomurl.com/ " > Github </ a >
+  <script>
 
-  < div  id =" pacman " > </ div >
-  < script  src =" pacman.js " > </ script >
-  < script  src =" modernizr-1.5.min.js " > </ script >
+    var el = document.getElementById("pacman");
 
-  < script >
-
-    var  el  =  document . getElementById ( "pacman" ) ;
-
-    si  ( Modernizr . canvas  &&  Modernizr . localstorage  && 
-        Modernisation . audio  &&  ( Moderniser . audio . ogg  ||  Moderniser . audio . mp3 ) )  {
-      fenêtre . setTimeout ( fonction  ( )  {  PACMAN . init ( el ,  "./" ) ;  } ,  0 ) ;
-    }  autre  { 
-      el . innerHTML  =  "Désolé, il faut un navigateur décent<br /><small>"  + 
-        "(firefox 3.6+, Chrome 4+, Opera 10+ et Safari 4+)</small>" ;
+    if (Modernizr.canvas && Modernizr.localstorage && 
+        Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+      window.setTimeout(function () { PACMAN.init(el, "./"); }, 0);
+    } else { 
+      el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
+        "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
     }
-  </script>​​
+  </script>
 
-</ corps >
+</body>
 </html>
