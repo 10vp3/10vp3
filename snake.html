@@ -75,11 +75,27 @@
             margin-top: 20px;
             display: none;
         }
+
+        #retour {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        #retour:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div id="retour">
-        <button onclick="retour()" id="retour">←menu</button>
+        <button onclick="retour()">← Menu</button>
     </div>
     <div id="gameArea"></div>
     <div id="score">Score: 0</div>
@@ -95,7 +111,7 @@
     <script src="snake.js"></script>
     <script>
         function retour() {
-            window.location.href("index.html")
+            window.location.href = "index.html";
         }
     </script>
 </body>
