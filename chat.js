@@ -1,6 +1,24 @@
-// chat.js
+// Fonction pour récupérer le nom d'utilisateur depuis localStorage
+function getUsername() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        return username;
+    } else {
+        // Si aucun username n'est trouvé, vous pouvez demander à l'utilisateur de le saisir
+        storeUsername(); // Demander à l'utilisateur de saisir son username
+        return localStorage.getItem('username'); // Récupérer le username après l'avoir stocké
+    }
+}
 
-// Charger les messages stockés dans localStorage
+// Fonction pour stocker le nom d'utilisateur dans localStorage
+function storeUsername() {
+    const username = prompt('Enter your username:');
+    if (username) {
+        localStorage.setItem('username', username);
+    }
+}
+
+// Fonction pour charger les messages depuis localStorage et les afficher
 function loadMessages() {
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
     const messagesContainer = document.getElementById('messages');
@@ -16,7 +34,7 @@ function loadMessages() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Ajouter un message au stockage local et à l'affichage
+// Fonction pour ajouter un message au stockage local et à l'affichage
 function addMessage(username, text) {
     const messages = JSON.parse(localStorage.getItem('messages')) || [];
     messages.push({ username, text });
@@ -24,11 +42,11 @@ function addMessage(username, text) {
     loadMessages();
 }
 
-// Envoyer un message
+// Fonction pour envoyer un message
 function sendMessage() {
     const username = getUsername(); // Récupérer le nom d'utilisateur depuis localStorage
     const messageInput = document.getElementById('messageInput');
-    const text = messageInput.value.trim();
+    const text = messageInput.value.trim(); // Utiliser la propriété .value pour obtenir le texte
 
     if (username && text) {
         addMessage(username, text);
@@ -38,7 +56,7 @@ function sendMessage() {
     }
 }
 
-// Event listeners
+// Ajouter des écouteurs d'événements
 document.getElementById('sendBtn').addEventListener('click', sendMessage);
 document.getElementById('messageInput').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
@@ -46,25 +64,5 @@ document.getElementById('messageInput').addEventListener('keypress', function(ev
     }
 });
 
-// Fonction pour récupérer l'username depuis localStorage
-function getUsername() {
-    const username = localStorage.getItem('username');
-    if (username) {
-        return username;
-    } else {
-        // Si aucun username n'est trouvé, vous pouvez demander à l'utilisateur de le saisir
-        storeUsername(); // Demander à l'utilisateur de saisir son username
-        return localStorage.getItem('username'); // Récupérer le username après l'avoir stocké
-    }
-}
-
-// Fonction pour stocker l'username
-function storeUsername() {
-    const username = prompt('Enter your username:');
-    if (username) {
-        localStorage.setItem('username', username);
-    }
-}
-
-// Load messages on page load
+// Charger les messages lors du chargement de la page
 loadMessages();
