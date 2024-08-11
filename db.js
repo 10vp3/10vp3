@@ -1,22 +1,17 @@
 // db.js
 
 // Fonction pour obtenir l'adresse IP
-function getUserIP() {
-    return new Promise((resolve, reject) => {
-        const rtc = new RTCPeerConnection({ iceServers: [] });
-        rtc.createDataChannel('');
-        rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
-        rtc.onicecandidate = (event) => {
-            if (event.candidate) {
-                const ipMatch = /(\d{1,3}\.){3}\d{1,3}/.exec(event.candidate.candidate);
-                if (ipMatch) {
-                    resolve(ipMatch[0]);
-                    rtc.onicecandidate = null;
-                }
-            }
-        };
-    });
+async function getUserIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'IP:', error);
+        return null;
+    }
 }
+
 
 // Fonction de redirection
 function redirection() {
