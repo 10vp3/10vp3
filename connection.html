@@ -3,85 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Contrôle d'accès</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #333;
-            color: white;
+            background-color: #f0f0f0;
         }
-        #gameArea {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            background-color: #000;
-            border: 1px solid #fff;
+        .container {
+            text-align: center;
         }
-        .snake {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #0f0;
-        }
-        .food {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #f00;
-        }
-        .controls {
-            position: absolute;
-            bottom: 10px;
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-        .controls button {
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            font-size: 24px;
-            border-radius: 50%;
-        }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
-        }
-        #startBtn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #007bff;
-            border: none;
-            color: white;
-            font-size: 20px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div id="gameArea">
-        <div id="score">Score: 0</div>
-        <button id="startBtn">Démarrer</button>
-        <div class="controls">
-            <button id="up">↑</button>
-            <button id="left">←</button>
-            <button id="down">↓</button>
-            <button id="right">→</button>
+    <div class="container">
+        <h1>Vérification d'accès</h1>
+        <p id="message">Chargement...</p>
+        <div id="loginForm" style="display: none;">
+            <p>Votre IP n'est pas autorisée. Veuillez entrer un nom d'utilisateur :</p>
+            <input type="text" id="username" placeholder="Nom d'utilisateur">
+            <button onclick="submitUsername()">Soumettre</button>
         </div>
     </div>
-    <script src="snake.js"></script>
+    <script src="db.js"></script>
 </body>
 </html>
