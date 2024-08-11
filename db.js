@@ -79,4 +79,4 @@ async function submitUsername() {
 }
 
 // Appeler la fonction de vérification au chargement de la page
-window.onload = handleIPCheck;
+window.onload = handleIPCheck();
