@@ -6,7 +6,7 @@ $ip = $data['ip'];
 $username = $data['username'];
 
 // Lire le fichier JSON existant
-$filename = 'ips.json';
+$filename = 'db.json';
 $ips = json_decode(file_get_contents($filename), true);
 
 // Ajouter le nouvel utilisateur à la liste
