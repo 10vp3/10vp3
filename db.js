@@ -1,8 +1,14 @@
 // Fonction pour obtenir l'adresse IP (exemple avec une IP fictive)
 function getUserIP() {
-    // Remplacer cette ligne par une méthode réelle d'obtention de l'IP si disponible.
-    // Pour l'exemple, nous générons une IP fictive.
-    return '192.168.0.1'; // Remplacez par la méthode réelle pour obtenir l'IP de l'utilisateur
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        console.log(data.ip); // Pour vérifier l'IP dans la console du navigateur
+        return data.ip;
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'IP:', error);
+        return null;
+    }
 }
 
 // Fonction pour vérifier si l'IP est dans le stockage local
