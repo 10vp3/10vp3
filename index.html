@@ -1,12 +1,84 @@
 <html>
   <head>
-    <title>Menu</title>
-  </head>
-  <body>
-    <h1><b>Menu</b></h1>
-    <div id="menu">
-      <button id="snake" onclick="go_page("snake.html")">Snake</button>
-      <button id="pacman" onclick="go_page("packman.html")">Pacman</button>
-    </div>
-  </body>
+    <title>Jeu de Snake</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #gameArea {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background-color: #333;
+            border: 10px solid #555;
+            margin-bottom: 20px;
+        }
+
+        .snake {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #00FF00;
+        }
+
+        .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FF0000;
+        }
+
+        #score {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #555;
+            color: white;
+            font-size: 18px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        #startBtn {
+            width: 100px;
+            height: 50px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+  <h1><b>Menu</b></h1>
+  <div id="menu">
+    <button id="snake" onclick="go_page("snake.html")">Snake</button>
+    <button id="pacman" onclick="go_page("packman.html")">Pacman</button>
+  </div>
+</body>
 </html>
