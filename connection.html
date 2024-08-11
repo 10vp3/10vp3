@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connection</title>
+    <title>Contrôle d'accès</title>
     <style>
-        #form {
-            display: none;
-            margin-top: 20px;
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
         }
-        #message {
-            margin-bottom: 10px;
-            font-weight: bold;
+        .container {
+            text-align: center;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <h1>Connection</h1>
-    <div id="form">
-        <div id="message"></div>
-        <input type="text" id="username" placeholder="Entrez un nom d'utilisateur">
-        <button onclick="submitUsername()">Submit</button>
+    <div class="container">
+        <h1>Vérification d'accès</h1>
+        <p id="message">Chargement...</p>
+        <div id="loginForm" style="display: none;">
+            <p>Votre IP n'est pas autorisée. Veuillez entrer un nom d'utilisateur :</p>
+            <input type="text" id="username" placeholder="Nom d'utilisateur">
+            <button onclick="submitUsername()">Soumettre</button>
+        </div>
     </div>
-    <script src="db.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
