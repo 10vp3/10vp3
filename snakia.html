@@ -40,6 +40,7 @@
         const bestScoreDisplay = document.getElementById('bestScore');
         const globalBestScoreDisplay = document.getElementById('globalBestScore');
         const startBtn = document.getElementById('startBtn');
+        startBtn.addEventListener('click', startGame);
         const gridSize = 20; // Taille de chaque cellule du serpent et de la nourriture
         const gridPadding = 1;
         const maxGridX = (gameArea.clientWidth / gridSize) - gridPadding * 2;
