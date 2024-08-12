@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake AI - Q-Learning</title>
+    <style>
+        #gameArea {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+        .snake {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+        }
+        .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="bestScore">Meilleur score actuel: 0 - Joueur</div>
+    <div id="globalBestScore">Meilleur score global: 0 - Joueur</div>
+    <button id="startBtn">Démarrer</button>
+    <div id="gameArea"></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const bestScoreDisplay = document.getElementById('bestScore');
+        const globalBestScoreDisplay = document.getElementById('globalBestScore');
+        const startBtn = document.getElementById('startBtn');
+        const gridSize = 20; // Taille de chaque cellule du serpent et de la nourriture
+        const gridPadding = 1;
+        const maxGridX = (gameArea.clientWidth / gridSize) - gridPadding * 2;
+        const maxGridY = (gameArea.clientHeight / gridSize) - gridPadding * 2;
+        let snake, direction, food, score, gameLoop;
+
+        let playerName = prompt("Entrez votre nom :") || "Joueur";
+        let bestScore = parseInt(localStorage.getItem(`${playerName}_bestScore`)) || 0;
+        let bestPlayer = localStorage.getItem("bestPlayer") || "";
+        let globalBestScore = parseInt(localStorage.getItem("globalBestScore")) || 0;
+
+        bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
+        globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${bestPlayer}`;
+
+        const Q = {}; // Q-table
+        const alpha = 0.1; // Learning rate
+        const gamma = 0.9; // Discount factor
+        let epsilon = 0.1; // Exploration rate
+
+        function getState() {
+            // Représenter l'état sous forme de chaîne pour la Q-table
+            return `${snake[0].x},${snake[0].y},${food.x},${food.y},${direction.x},${direction.y}`;
+        }
+
+        function chooseAction(state) {
+            // Exploration vs Exploitation
+            if (Math.random() < epsilon) {
+                // Exploration : choisir une action aléatoire
+                return Math.floor(Math.random() * 4);
+            } else {
+                // Exploitation : choisir la meilleure action selon la Q-table
+                if (!Q[state]) Q[state] = [0, 0, 0, 0];
+                return Q[state].indexOf(Math.max(...Q[state]));
+            }
+        }
+
+        function updateQTable(prevState, action, reward, nextState) {
+            if (!Q[prevState]) Q[prevState] = [0, 0, 0, 0];
+            if (!Q[nextState]) Q[nextState] = [0, 0, 0, 0];
+
+            // Q-Learning update rule
+            Q[prevState][action] = (1 - alpha) * Q[prevState][action] + alpha * (reward + gamma * Math.max(...Q[nextState]));
+        }
+
+        function initGame() {
+            snake = [{ x: 200, y: 200 }];
+            direction = { x: 0, y: 0 };
+            food = { x: 0, y: 0 };
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            createFood();
+            drawSnake();
+        }
+
+        function createFood() {
+            food.x = (Math.floor(Math.random() * maxGridX) + gridPadding) * gridSize;
+            food.y = (Math.floor(Math.random() * maxGridY) + gridPadding) * gridSize;
+        }
+
+        function drawFood() {
+            const foodElement = document.createElement('div');
+            foodElement.style.left = `${food.x}px`;
+            foodElement.style.top = `${food.y}px`;
+            foodElement.classList.add('food');
+            gameArea.appendChild(foodElement);
+        }
+
+        function moveSnake() {
+            const newHead = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+            snake.unshift(newHead);
+
+            if (newHead.x === food.x && newHead.y === food.y) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                createFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function drawSnake() {
+            gameArea.innerHTML = '';
+            snake.forEach(segment => {
+                const snakeElement = document.createElement('div');
+                snakeElement.style.left = `${segment.x}px`;
+                snakeElement.style.top = `${segment.y}px`;
+                snakeElement.classList.add('snake');
+                gameArea.appendChild(snakeElement);
+            });
+            drawFood();
+        }
+
+        function calculateReward(prevHead) {
+            if (snake[0].x === food.x && snake[0].y === food.y) {
+                return 1; // Récompense pour avoir mangé la nourriture
+            } else if (
+                snake[0].x < 0 || snake[0].x >= gameArea.clientWidth ||
+                snake[0].y < 0 || snake[0].y >= gameArea.clientHeight ||
+                snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y)
+            ) {
+                return -1; // Pénalité pour avoir heurté un mur ou son propre corps
+            } else {
+                return 0; // Pas de récompense ni de pénalité pour un mouvement normal
+            }
+        }
+
+        function game() {
+            const currentState = getState();
+            const action = chooseAction(currentState);
+
+            // Associer l'action choisie à une direction
+            const actions = [
+                { x: -gridSize, y: 0 }, // Gauche
+                { x: gridSize, y: 0 },  // Droite
+                { x: 0, y: -gridSize }, // Haut
+                { x: 0, y: gridSize }   // Bas
+            ];
+
+            direction = actions[action];
+
+            const prevHead = { ...snake[0] };
+            moveSnake();
+
+            const reward = calculateReward(prevHead);
+            const nextState = getState();
+
+            updateQTable(currentState, action, reward, nextState);
+
+            drawSnake();
+            checkCollision();
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+            if (
+                head.x < 0 || head.x >= gameArea.clientWidth ||
+                head.y < 0 || head.y >= gameArea.clientHeight ||
+                snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
+            ) {
+                clearInterval(gameLoop);
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    localStorage.setItem(`${playerName}_bestScore`, bestScore);
+                    bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
+                    
+                    if (score > globalBestScore) {
+                        globalBestScore = score;
+                        localStorage.setItem("globalBestScore", globalBestScore);
+                        localStorage.setItem("bestPlayer", playerName);
+                        globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${playerName}`;
+                    }
+                }
+
+                alert('Game Over! Votre score est: ' + score);
+                startBtn.textContent = "Rejouer";
+                startBtn.style.display = "block";
+            }
+        }
+
+        function startGame() {
+            initGame();
+            startBtn.style.display = "none";
+            gameLoop = setInterval(game, 100);
+            epsilon = Math.max(0.01, epsilon * 0.99); // Réduire epsilon progressivement
+        }
+
+        document.addEventListener('keydown', changeDirection);
+        startBtn.addEventListener('click', startGame);
+
+        startBtn.style.display = "block";
+    });
+    </script>
+</body>
+</html>
