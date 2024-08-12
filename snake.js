@@ -4,16 +4,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const bestScoreDisplay = document.getElementById('bestScore');
     const globalBestScoreDisplay = document.getElementById('globalBestScore');
     const startBtn = document.getElementById('startBtn');
-    const gridSize = 20;
+    const gridSize = 20; // Taille de chaque cellule du serpent et de la nourriture
     const gridPadding = 1;
     const maxGridX = (gameArea.clientWidth / gridSize) - gridPadding * 2;
     const maxGridY = (gameArea.clientHeight / gridSize) - gridPadding * 2;
     let snake, direction, food, score, gameLoop;
 
     let playerName = prompt("Entrez votre nom :") || "Joueur";
-    let bestScore = localStorage.getItem(`${playerName}_bestScore`) || 0;
+    let bestScore = parseInt(localStorage.getItem(`${playerName}_bestScore`)) || 0;
     let bestPlayer = localStorage.getItem("bestPlayer") || "";
-    let globalBestScore = localStorage.getItem("globalBestScore") || 0;
+    let globalBestScore = parseInt(localStorage.getItem("globalBestScore")) || 0;
 
     bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
     globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${bestPlayer}`;
@@ -69,13 +69,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function changeDirection(event) {
         const key = event.keyCode;
         if (key === 37 && direction.x === 0) {
-            direction = { x: -gridSize, y: 0 };
+            direction = { x: -gridSize, y: 0 }; // Gauche
         } else if (key === 38 && direction.y === 0) {
-            direction = { x: 0, y: -gridSize };
+            direction = { x: 0, y: -gridSize }; // Haut
         } else if (key === 39 && direction.x === 0) {
-            direction = { x: gridSize, y: 0 };
+            direction = { x: gridSize, y: 0 }; // Droite
         } else if (key === 40 && direction.y === 0) {
-            direction = { x: 0, y: gridSize };
+            direction = { x: 0, y: gridSize }; // Bas
+        }
+    }
+
+    function handleTouchControl(directionKey) {
+        if (directionKey === 'left' && direction.x === 0) {
+            direction = { x: -gridSize, y: 0 }; // Gauche
+        } else if (directionKey === 'up' && direction.y === 0) {
+            direction = { x: 0, y: -gridSize }; // Haut
+        } else if (directionKey === 'right' && direction.x === 0) {
+            direction = { x: gridSize, y: 0 }; // Droite
+        } else if (directionKey === 'down' && direction.y === 0) {
+            direction = { x: 0, y: gridSize }; // Bas
         }
     }
 
@@ -92,13 +104,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 bestScore = score;
                 localStorage.setItem(`${playerName}_bestScore`, bestScore);
                 bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
-            }
-
-            if (score > globalBestScore) {
-                globalBestScore = score;
-                localStorage.setItem("globalBestScore", globalBestScore);
-                localStorage.setItem("bestPlayer", playerName);
-                globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${playerName}`;
+                
+                if (score > globalBestScore) {
+                    globalBestScore = score;
+                    localStorage.setItem("globalBestScore", globalBestScore);
+                    localStorage.setItem("bestPlayer", playerName);
+                    globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${playerName}`;
+                }
             }
 
             alert('Game Over! Votre score est: ' + score);
@@ -119,6 +131,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         gameLoop = setInterval(game, 100);
     }
 
+    document.getElementById('up').addEventListener('click', () => handleTouchControl('up'));
+    document.getElementById('left').addEventListener('click', () => handleTouchControl('left'));
+    document.getElementById('down').addEventListener('click', () => handleTouchControl('down'));
+    document.getElementById('right').addEventListener('click', () => handleTouchControl('right'));
+
     document.addEventListener('keydown', changeDirection);
     startBtn.addEventListener('click', startGame);
+
+    startBtn.style.display = "block";
 });
