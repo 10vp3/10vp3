@@ -17,13 +17,13 @@
 
         #gameArea {
             position: relative;
-            width: 400px;
-            height: 400px;
-            background-color: #0000FF; /* Fond bleu */
+            width: 600px;
+            height: 600px;
+            background-color: #ADD8E6;
             background-image: 
-                linear-gradient(0deg, transparent 24%, rgba(255,255,255,0.25) 25%, transparent 26%, transparent 74%, rgba(255,255,255,0.25) 75%, transparent 76%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(255,255,255,0.25) 25%, transparent 26%, transparent 74%, rgba(255,255,255,0.25) 75%, transparent 76%, transparent);
-            background-size: 20px 20px; /* Taille du quadrillage */
+                linear-gradient(white 1px, transparent 1px), 
+                linear-gradient(90deg, white 1px, transparent 1px);
+            background-size: 20px 20px;
             border: 10px solid #555;
             margin-bottom: 20px;
         }
@@ -48,24 +48,10 @@
             margin-bottom: 20px;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            background-color: #555;
-            color: white;
+        #bestScore, #globalBestScore {
             font-size: 18px;
-            border: none;
-            margin: 5px;
-            cursor: pointer;
-            user-select: none;
-            text-align: center;
-            line-height: 50px;
+            color: #555;
+            margin-bottom: 10px;
         }
 
         #startBtn {
@@ -77,7 +63,10 @@
             border: none;
             cursor: pointer;
             margin-top: 20px;
-            display: none;
+        }
+
+        #startBtn:hover {
+            background-color: #0056b3;
         }
 
         #retour {
@@ -103,20 +92,143 @@
     </div>
     <div id="gameArea"></div>
     <div id="score">Score: 0</div>
-    <div class="controls">
-        <button class="control-btn" id="up">↑</button>
-    </div>
-    <div class="controls">
-        <button class="control-btn" id="left">←</button>
-        <button class="control-btn" id="down">↓</button>
-        <button class="control-btn" id="right">→</button>
-    </div>
-    <button id="startBtn">Commencer</button>
+    <div id="bestScore">Meilleur score actuel: 0 - <span id="currentPlayer"></span></div>
+    <div id="globalBestScore">Meilleur score global: 0 - <span id="globalPlayer"></span></div>
+    <button id="startBtn" onclick="startGame()">Commencer</button>
+
     <script src="snake.js"></script>
     <script>
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const bestScoreDisplay = document.getElementById('bestScore');
+        const globalBestScoreDisplay = document.getElementById('globalBestScore');
+        const currentPlayerDisplay = document.getElementById('currentPlayer');
+        const globalPlayerDisplay = document.getElementById('globalPlayer');
+        const startBtn = document.getElementById('startBtn');
+        const gridSize = 20;
+        const gridPadding = 1;
+        const maxGridX = (gameArea.clientWidth / gridSize) - gridPadding * 2;
+        const maxGridY = (gameArea.clientHeight / gridSize) - gridPadding * 2;
+        let snake, direction, food, score, gameLoop;
+
+        // Variables pour le joueur actuel et le meilleur score global
+        let playerName = prompt("Entrez votre nom :") || "Joueur";
+        let bestScore = localStorage.getItem(`${playerName}_bestScore`) || 0;
+        let bestPlayer = localStorage.getItem("bestPlayer") || "";
+        let globalBestScore = localStorage.getItem("globalBestScore") || 0;
+
+        // Mise à jour de l'affichage des scores
+        bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
+        globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${bestPlayer}`;
+
         function retour() {
             window.location.href = "index.html";
         }
+
+        function initGame() {
+            snake = [{ x: 200, y: 200 }];
+            direction = { x: 0, y: 0 };
+            food = { x: 0, y: 0 };
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            createFood();
+            drawSnake();
+        }
+
+        function createFood() {
+            food.x = (Math.floor(Math.random() * maxGridX) + gridPadding) * gridSize;
+            food.y = (Math.floor(Math.random() * maxGridY) + gridPadding) * gridSize;
+        }
+
+        function drawFood() {
+            const foodElement = document.createElement('div');
+            foodElement.style.left = `${food.x}px`;
+            foodElement.style.top = `${food.y}px`;
+            foodElement.classList.add('food');
+            gameArea.appendChild(foodElement);
+        }
+
+        function moveSnake() {
+            const newHead = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+            snake.unshift(newHead);
+
+            if (newHead.x === food.x && newHead.y === food.y) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                createFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function drawSnake() {
+            gameArea.innerHTML = '';
+            snake.forEach(segment => {
+                const snakeElement = document.createElement('div');
+                snakeElement.style.left = `${segment.x}px`;
+                snakeElement.style.top = `${segment.y}px`;
+                snakeElement.classList.add('snake');
+                gameArea.appendChild(snakeElement);
+            });
+            drawFood();
+        }
+
+        function changeDirection(event) {
+            const key = event.keyCode;
+            if (key === 37 && direction.x === 0) {
+                direction = { x: -gridSize, y: 0 };
+            } else if (key === 38 && direction.y === 0) {
+                direction = { x: 0, y: -gridSize };
+            } else if (key === 39 && direction.x === 0) {
+                direction = { x: gridSize, y: 0 };
+            } else if (key === 40 && direction.y === 0) {
+                direction = { x: 0, y: gridSize };
+            }
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+            if (
+                head.x < 0 || head.x >= gameArea.clientWidth ||
+                head.y < 0 || head.y >= gameArea.clientHeight ||
+                snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
+            ) {
+                clearInterval(gameLoop);
+
+                // Mettre à jour le meilleur score du joueur actuel
+                if (score > bestScore) {
+                    bestScore = score;
+                    localStorage.setItem(`${playerName}_bestScore`, bestScore);
+                    bestScoreDisplay.textContent = `Meilleur score actuel: ${bestScore} - ${playerName}`;
+                }
+
+                // Mettre à jour le meilleur score global
+                if (score > globalBestScore) {
+                    globalBestScore = score;
+                    localStorage.setItem("globalBestScore", globalBestScore);
+                    localStorage.setItem("bestPlayer", playerName);
+                    globalBestScoreDisplay.textContent = `Meilleur score global: ${globalBestScore} - ${playerName}`;
+                }
+
+                alert('Game Over! Votre score est: ' + score);
+                startBtn.textContent = "Rejouer";
+                startBtn.style.display = "block";
+            }
+        }
+
+        function game() {
+            moveSnake();
+            drawSnake();
+            checkCollision();
+        }
+
+        function startGame() {
+            initGame();
+            startBtn.style.display = "none";
+            gameLoop = setInterval(game, 100);
+        }
+
+        document.addEventListener('keydown', changeDirection);
     </script>
 </body>
 </html>
