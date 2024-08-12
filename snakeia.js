@@ -119,12 +119,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    function game() {
-        aiMove();
-        moveSnake();
-        drawSnake();
-        checkCollision();
-    }
 
     function startGame() {
         initGame();
@@ -176,4 +170,44 @@ function isMoveSafe(newHead) {
         newHead.y >= 0 && newHead.y < gameArea.clientHeight &&
         !snake.slice(1).some(segment => segment.x === newHead.x && segment.y === newHead.y)
     );
+}
+
+function game() {
+    const currentState = getState();
+    const action = chooseAction(currentState);
+
+    // Associer l'action choisie à une direction
+    const actions = [
+        { x: -gridSize, y: 0 }, // Gauche
+        { x: gridSize, y: 0 },  // Droite
+        { x: 0, y: -gridSize }, // Haut
+        { x: 0, y: gridSize }   // Bas
+    ];
+
+    direction = actions[action];
+
+    const prevHead = { ...snake[0] };
+    moveSnake();
+
+    const reward = calculateReward(prevHead);
+    const nextState = getState();
+
+    updateQTable(currentState, action, reward, nextState);
+
+    drawSnake();
+    checkCollision();
+}
+
+function calculateReward(prevHead) {
+    if (snake[0].x === food.x && snake[0].y === food.y) {
+        return 1; // Récompense pour avoir mangé la nourriture
+    } else if (
+        snake[0].x < 0 || snake[0].x >= gameArea.clientWidth ||
+        snake[0].y < 0 || snake[0].y >= gameArea.clientHeight ||
+        snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y)
+    ) {
+        return -1; // Pénalité pour avoir heurté un mur ou son propre corps
+    } else {
+        return 0; // Pas de récompense ni de pénalité pour un mouvement normal
+    }
 }
