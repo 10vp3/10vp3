@@ -1,3 +1,13 @@
+/* Centrage du jeu au milieu de l'écran */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
 .grid {
     display: flex;
     flex-wrap: wrap;
