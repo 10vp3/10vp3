@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+ameliore moi l'estetique de se site:<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu de Jeux</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -13,15 +12,12 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f7f7f7;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
+            background-color: #f0f0f0;
         }
 
         h1 {
-            margin-bottom: 30px;
-            font-size: 36px;
-            color: #444;
+            margin-bottom: 20px;
+            color: #333;
         }
 
         #menu {
@@ -30,17 +26,14 @@
         }
 
         button {
-            width: 120px;
+            width: 100px;
             height: 50px;
             background-color: #007BFF;
             color: white;
             font-size: 18px;
-            font-weight: 600;
             border: none;
-            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
+            text-align: center;
         }
 
         button:hover {
@@ -49,11 +42,11 @@
     </style>
 </head>
 <body>
-    <h1>Menu de Jeux</h1>
+    <h1><b>Menu</b></h1>
     <div id="menu">
         <button id="snake" onclick="go_page('snake.html')">Snake</button>
         <button id="pacman" onclick="go_page('pacman.html')">Pacman</button>
-        <button id="jeu2d" onclick="go_page('jeu2d.html')">Jeu 2D</button>
+        <button id="jeu 2d" onclick="go_page('pacman.js')">Jeu 2d</button>
     </div>
 
     <script>
@@ -63,3 +56,55 @@
     </script>
 </body>
 </html>
+et le css:.grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 560px;
+    height: 560px;
+    border: solid black;
+}
+  
+.grid div {
+    width: 20px;
+    height: 20px;
+}
+
+.pac-dot {
+    background-color: green;   
+    border: 5px solid white;
+    box-sizing: border-box;
+}
+
+.wall {
+    background-color: blue;
+}
+
+.power-pellet {
+    background-color: green;
+    border-radius: 10px;
+}
+
+.blinky {
+    background-color: red;
+}
+
+.pinky {
+    background-color: pink;
+}
+
+.inky {
+    background-color: cyan;
+}
+
+.clyde {
+    background-color: orange;     
+}
+
+.pac-man {
+    background-color: yellow;
+    border-radius: 10px;
+}
+
+.scared-ghost {
+    background-color: aquamarine;
+}
