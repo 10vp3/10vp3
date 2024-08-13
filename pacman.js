@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const scoreDisplay = document.getElementById("score");
+    const scoreDisplay = document.getElementById("note");
     const width = 28;
     let score = 0;
-    const grid = document.querySelector(".grid");
+    const grid = document.querySelector(".grille");
 
     const layout = [
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -33,17 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
         1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-    ];
-
-    // 0 - pac-dots
-    // 1 - wall
-    // 2 - ghost-lair
-    // 3 - power-pellet
-    // 4 - empty
+     ];
 
     const squares = [];
+    let moveInterval; // Déclaration de moveInterval au début
 
-    //create your board
+    // Création de la grille
     function createBoard() {
         for (let i = 0; i < layout.length; i++) {
             const square = document.createElement("div");
@@ -51,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
             grid.appendChild(square);
             squares.push(square);
 
-            //add layout to the board
             if (layout[i] === 0) {
                 squares[i].classList.add("pac-dot");
             }
@@ -68,16 +62,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     createBoard();
 
-    //create Characters
-    // draw pac-man onto the board
+    // Création des personnages
     let pacmanCurrentIndex = 490;
     squares[pacmanCurrentIndex].classList.add("pac-man");
 
-    let moveInterval;
-
-    //move pacman
     function movePacman(e) {
-        clearInterval(moveInterval); // Clear previous interval to avoid multiple movements at once
+        clearInterval(moveInterval); // Stopper le mouvement précédent
+
         const move = () => {
             squares[pacmanCurrentIndex].classList.remove("pac-man");
             switch (e.key) {
@@ -131,17 +122,17 @@ document.addEventListener("DOMContentLoaded", () => {
             checkForWin();
         };
 
-        move(); // Execute initial movement
-        moveInterval = setInterval(move, 200); // Continue moving while the key is held
+        move(); // Premier mouvement
+        moveInterval = setInterval(move, 200); // Continuer à bouger tant que la touche est enfoncée
     }
 
     document.addEventListener("keydown", movePacman);
 
     document.addEventListener("keyup", () => {
-        clearInterval(moveInterval); // Stop moving when key is released
+        clearInterval(moveInterval); // Arrêter de bouger quand la touche est relâchée
     });
 
-    //what happens when you eat a pac-dot
+    // Fonction pour gérer les pac-dots mangés
     function pacDotEaten() {
         if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
             score++;
@@ -150,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //what happens when you eat a power-pellet
+    // Fonction pour gérer les power-pellets mangés
     function powerPelletEaten() {
         if (squares[pacmanCurrentIndex].classList.contains("power-pellet")) {
             score += 10;
@@ -161,12 +152,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //make the ghosts stop flashing
+    // Arrêter de faire peur aux fantômes
     function unScareGhosts() {
         ghosts.forEach(ghost => ghost.isScared = false);
     }
 
-    //create ghosts using Constructor
+    // Créer les fantômes avec un constructeur
     class Ghost {
         constructor(className, startIndex, speed) {
             this.className = className;
@@ -178,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //all my ghosts
+    // Déclaration des fantômes
     const ghosts = [
         new Ghost("blinky", 348, 250),
         new Ghost("pinky", 376, 400),
@@ -186,11 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
         new Ghost("clyde", 379, 500),
     ];
 
-    //draw my ghosts onto the grid
+    // Dessiner les fantômes sur la grille
     ghosts.forEach(ghost =>
         squares[ghost.currentIndex].classList.add(ghost.className, "ghost"));
 
-    //move ghosts randomly
+    // Déplacer les fantômes aléatoirement
     ghosts.forEach(ghost => moveGhost(ghost));
 
     function moveGhost(ghost) {
@@ -198,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let direction = directions[Math.floor(Math.random() * directions.length)];
 
         ghost.timerId = setInterval(function () {
-            //if next square your ghost is going to go to does not have a ghost and does not have a wall
             if (
                 !squares[ghost.currentIndex + direction].classList.contains("ghost") &&
                 !squares[ghost.currentIndex + direction].classList.contains("wall")
@@ -206,14 +196,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 squares[ghost.currentIndex].classList.remove(ghost.className, "ghost", "scared-ghost");
                 ghost.currentIndex += direction;
                 squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
-                // else find a new random direction to go in
-            } else direction = directions[Math.floor(Math.random() * directions.length)];
-            // if the ghost is currently scared
+            } else {
+                direction = directions[Math.floor(Math.random() * directions.length)];
+            }
+
             if (ghost.isScared) {
                 squares[ghost.currentIndex].classList.add("scared-ghost");
             }
 
-            //if the ghost is currently scared and pacman is on it
             if (ghost.isScared && squares[ghost.currentIndex].classList.contains("pac-man")) {
                 ghost.isScared = false;
                 squares[ghost.currentIndex].classList.remove(ghost.className, "ghost", "scared-ghost");
@@ -222,33 +212,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 scoreDisplay.innerHTML = score;
                 squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
             }
-            checkForGameOver();
         }, ghost.speed);
     }
 
-    //check for a game over
     function checkForGameOver() {
         if (
             squares[pacmanCurrentIndex].classList.contains("ghost") &&
-            !squares[pacmanCurrentIndex].classList.contains("scared-ghost")) {
+            !squares[pacmanCurrentIndex].classList.contains("scared-ghost")
+        ) {
             ghosts.forEach(ghost => clearInterval(ghost.timerId));
             document.removeEventListener("keydown", movePacman);
-            document.removeEventListener("keyup", movePacman);
-            setTimeout(function () {
-                alert("Game Over");
-            }, 500);
+            scoreDisplay.innerHTML = "GAME OVER";
         }
     }
 
-    //check for a win - change the winning score to whatever you wish
     function checkForWin() {
-        if (score >= 274) {
+        if (score === 274) {
             ghosts.forEach(ghost => clearInterval(ghost.timerId));
             document.removeEventListener("keydown", movePacman);
-            document.removeEventListener("keyup", movePacman);
-            setTimeout(function () {
-                alert("You have WON!");
-            }, 500);
+            scoreDisplay.innerHTML = "YOU WIN";
+        }
+    }
+});
         }
     }
 });
