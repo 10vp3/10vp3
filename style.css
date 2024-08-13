@@ -1,19 +1,20 @@
-grid {
+.grid {
     display: flex;
     flex-wrap: wrap;
     width: 560px;
     height: 560px;
     border: solid black;
 }
-  
+
 .grid div {
     width: 20px;
     height: 20px;
 }
 
 .pac-dot {
-    background-color: green;   
-    border: 5px solid white;
+    background-color: white; /* Couleur blanche pour les pac-dots */
+    border: 5px solid white; /* Ajouter une bordure blanche autour du pac-dot */
+    border-radius: 50%; /* Assurez-vous que les pac-dots sont ronds */
     box-sizing: border-box;
 }
 
@@ -39,12 +40,12 @@ grid {
 }
 
 .clyde {
-    background-color: orange;     
+    background-color: orange;
 }
 
 .pac-man {
-    background-color: yellow;
-    border-radius: 10px;
+    background-color: yellow; /* Couleur jaune pour Pac-Man */
+    border-radius: 50%; /* Assurez-vous que Pac-Man est rond */
 }
 
 .scared-ghost {
