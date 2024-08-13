@@ -3,50 +3,59 @@
     flex-wrap: wrap;
     width: 560px;
     height: 560px;
-    border: solid black;
+    border: 2px solid #333;
+    background-color: #000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-  
+
 .grid div {
     width: 20px;
     height: 20px;
-}
-
-.pac-dot {
-    background-color: green;   
-    border: 5px solid white;
     box-sizing: border-box;
 }
 
+.pac-dot {
+    background-color: #ffeb3b;
+    border-radius: 50%;
+}
+
 .wall {
-    background-color: blue;
+    background-color: #3f51b5;
+    border: 1px solid #1a237e;
 }
 
 .power-pellet {
-    background-color: green;
-    border-radius: 10px;
+    background-color: #ffeb3b;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffeb3b;
 }
 
 .blinky {
-    background-color: red;
+    background-color: #f44336;
+    border-radius: 50%;
 }
 
 .pinky {
-    background-color: pink;
+    background-color: #e91e63;
+    border-radius: 50%;
 }
 
 .inky {
-    background-color: cyan;
+    background-color: #00bcd4;
+    border-radius: 50%;
 }
 
 .clyde {
-    background-color: orange;     
+    background-color: #ff9800;
+    border-radius: 50%;
 }
 
 .pac-man {
-    background-color: yellow;
-    border-radius: 10px;
+    background-color: #ffeb3b;
+    border-radius: 50%;
 }
 
 .scared-ghost {
-    background-color: aquamarine;
+    background-color: #03a9f4;
+    border-radius: 50%;
 }
