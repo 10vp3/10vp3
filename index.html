@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Menu</title>
+    <title>Menu de Jeux</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -13,7 +13,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #ece9e6, #ffffff);
+            background-color: #f7f7f7;
             font-family: 'Poppins', sans-serif;
             color: #333;
         }
@@ -21,13 +21,12 @@
         h1 {
             margin-bottom: 30px;
             font-size: 36px;
-            color: #333;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            color: #444;
         }
 
         #menu {
             display: flex;
-            gap: 30px;
+            gap: 20px;
         }
 
         button {
@@ -41,21 +40,16 @@
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s;
         }
 
         button:hover {
             background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        button:active {
-            background-color: #004494;
         }
     </style>
 </head>
 <body>
-    <h1>Game Menu</h1>
+    <h1>Menu de Jeux</h1>
     <div id="menu">
         <button id="snake" onclick="go_page('snake.html')">Snake</button>
         <button id="pacman" onclick="go_page('pacman.html')">Pacman</button>
